@@ -20,7 +20,7 @@ function hdr(){const a=[['#/','Dashboard'],['#/rekam','Rekam belajar'],['#/setel
 function form(el,v,done){
  const op=m=>`<option value="${m.id}" ${v.j==m.id?'selected':''}>${m.name}</option>`;
  el.innerHTML=`<label>Nama panggilan<input id="fn" maxlength="20" value="${v.n||''}" autocomplete="nickname"></label>
- <label>Kelas<select id="fk">${['X','XI','XII'].map(k=>`<option ${v.k==k?'selected':''}>${k}</option>`).join('')}</select></label>
+ <label>Kelas<select id="fk">${['X','XI','XII'].map(k=>{const on=CAT.kelas.includes(k);return `<option value="${k}" ${on?'':'disabled'} ${(CAT.kelas.includes(v.k)?v.k:'XII')==k?'selected':''}>${k}${on?'':' (belum tersedia)'}</option>`}).join('')}</select><span class="sm mu" style="font-weight:400">TKA diikuti siswa kelas XII. Kelas X dan XI menyusul jika ada perubahan aturan.</span></label>
  <label>Jurusan atau program keahlian<select id="fj"><option value="">Pilih jurusan</option><optgroup label="SMA/MA">${CAT.majors.filter(m=>!m.smk).map(op).join('')}</optgroup><optgroup label="SMK">${CAT.majors.filter(m=>m.smk).map(op).join('')}</optgroup></select></label>
  <fieldset><legend>Mapel wajib, selalu aktif</legend>${CAT.wajib.map(i=>`<label class="ck lock"><input type="checkbox" checked disabled><span>${SM[i].name}</span></label>`).join('')}</fieldset>
  <fieldset><legend>Mapel pilihan, maksimal 2</legend><div id="fe"></div><p class="sm mu" id="fc"></p></fieldset><p class="err" id="fx" role="alert"></p><button class="btn" id="fb">${v.n?'Simpan perubahan':'Mulai belajar'}</button>`;
