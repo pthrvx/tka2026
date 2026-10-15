@@ -22,12 +22,16 @@ function form(el,v,done){
  el.innerHTML=`<label>Nama panggilan<input id="fn" maxlength="20" value="${v.n||''}" autocomplete="nickname"></label>
  <label>Kelas<select id="fk">${['X','XI','XII'].map(k=>`<option ${v.k==k?'selected':''}>${k}</option>`).join('')}</select></label>
  <label>Jurusan atau program keahlian<select id="fj"><option value="">Pilih jurusan</option><optgroup label="SMA/MA">${CAT.majors.filter(m=>!m.smk).map(op).join('')}</optgroup><optgroup label="SMK">${CAT.majors.filter(m=>m.smk).map(op).join('')}</optgroup></select></label>
- <fieldset><legend>Mapel wajib, selalu aktif</legend>${CAT.wajib.map(i=>`<label class="ck"><input type="checkbox" checked disabled><span>${SM[i].name}</span></label>`).join('')}</fieldset>
+ <fieldset><legend>Mapel wajib, selalu aktif</legend>${CAT.wajib.map(i=>`<label class="ck lock"><input type="checkbox" checked disabled><span>${SM[i].name}</span></label>`).join('')}</fieldset>
  <fieldset><legend>Mapel pilihan, maksimal 2</legend><div id="fe"></div><p class="sm mu" id="fc"></p></fieldset><p class="err" id="fx" role="alert"></p><button class="btn" id="fb">${v.n?'Simpan perubahan':'Mulai belajar'}</button>`;
- const chk=()=>{const c=$$('#fe input'),n=c.filter(x=>x.checked).length;c.forEach(x=>x.disabled=!x.checked&&n>=2);$('#fc').textContent=c.length?n+' dari 2 dipilih':''};
- const els=auto=>{const m=CAT.majors.find(x=>x.id==$('#fj').value);$('#fe').innerHTML=m?m.el.map(i=>`<label class="ck"><input type="checkbox" value="${i}" ${(v.p||[]).includes(i)||(auto&&m.el.length<=2)?'checked':''}><span>${SM[i].name}</span></label>`).join(''):'<p class="sm mu">Pilih jurusan dulu.</p>';$$('#fe input').forEach(x=>x.onchange=chk);chk()};
+ const chk=()=>{const c=$$('#fe input'),n=c.filter(x=>x.checked).length;c.forEach(x=>{x.disabled=!x.checked&&n>=2;x.parentElement.classList.toggle('lock',x.disabled)});$('#fc').textContent=c.length?n+' dari 2 dipilih'+(n>=2?'. Hilangkan satu centang untuk mengganti pilihan.':''):''};
+ const els=()=>{const m=CAT.majors.find(x=>x.id==$('#fj').value);if(!m){$('#fe').innerHTML='<p class="sm mu">Pilih jurusan dulu.</p>';chk();return}
+  const it=i=>`<label class="ck"><input type="checkbox" value="${i}" ${(v.p||[]).includes(i)?'checked':''}><span>${SM[i].name}</span></label>`,g=(t,l)=>{const a=m.el.filter(i=>SM[i].type==t);return a.length?`<p class="sh" style="margin:10px 0 2px">${l}</p>${a.map(it).join('')}`:''};
+  $('#fe').innerHTML=g('pilihan-keahlian','Mapel program keahlian')+g('pilihan-umum','Mapel pilihan umum');$$('#fe input').forEach(x=>x.onchange=chk);chk()};
  $('#fj').onchange=()=>{v.p=[];els(true)};els(false);
  $('#fb').onclick=()=>{const n=$('#fn').value.replace(/[<>"&]/g,'').trim(),j=$('#fj').value,e=t=>{$('#fx').textContent=t};if(!n)return e('Isi nama panggilan dulu.');if(!j)return e('Pilih jurusan dulu.');done({n,k:$('#fk').value,j,p:$$('#fe input:checked').map(x=>x.value)})}}
+const fig=q=>q.im?`<figure class="fg" role="img" aria-label="${q.alt||'Gambar soal'}">${q.im}</figure>`:'';
+const rvo=(q,u)=>q.o.map((o,k)=>{const c=q.a.includes(k)?'ok':u.includes(k)?'no':'',t=o+(q.a.includes(k)?' (jawaban benar)':u.includes(k)?' (jawabanmu)':'');return q.t=='m'?`<div class="op cx ${c}"><input type="checkbox" disabled ${u.includes(k)?'checked':''}><span>${t}</span></div>`:`<div class="op ${c}"><b>${L[k]}</b><span>${t}</span></div>`}).join('');
 const V={};
 V.land=()=>{const c=t=>CAT.subj.filter(s=>s.type==t).length;
  app.innerHTML=`<div class="lg"><section><p class="ey">Persiapan TKA 2026</p><h1>${CAT.subj.length} mapel, satu jalur belajar yang kamu pilih sendiri</h1><p class="lead">Isi nama, kelas, dan jurusan. Mapel wajib langsung aktif, lalu pilih maksimal 2 mapel pilihan. Tiap mapel punya modul bacaan, kuis latihan, dan pembahasan.</p>
@@ -42,7 +46,7 @@ function nx(){const a=act().map(i=>({s:SM[i],r:RR(i)}));let x=a.find(x=>!Object.
  x=a[0];return{t:'Review materi',d:`Semua mapel sudah di atas 75%. Ulangi ${x.s.name} agar tetap ingat.`,h:`${B}mapel/${x.s.id}.html`}}
 function recent(){const o=[];act().forEach(i=>full(RR(i)).forEach(x=>o.push({...x,i})));return o.sort((a,b)=>a.t-b.t)}
 V.dash=()=>{const a=act(),n=nx(),tm=a.reduce((s,i)=>s+SM[i].nm,0),rd=a.reduce((s,i)=>s+Object.keys(RR(i).read).length,0),sc=a.filter(i=>full(RR(i)).length).map(i=>last(RR(i))),av=sc.length?Math.round(sc.reduce((x,y)=>x+y,0)/sc.length)+'%':'-';
- const row=i=>{const s=SM[i],r=RR(i),f=full(r),d=Object.keys(r.read).length;return `<div class="rw"><div><h3>${s.name}</h3><p class="sm mu" style="margin:0">${d} dari ${s.nm} modul dibaca. ${f.length?'Skor terakhir '+last(r)+'% setelah '+f.length+' percobaan.':'Kuis belum dikerjakan.'}</p><div class="pb"><i style="width:${d/s.nm*100}%"></i></div></div><div class="ac"><a class="btn g" href="${B}mapel/${i}.html">Modul</a><a class="btn g" href="${B}mapel/${i}.html#/kuis">Kuis</a></div></div>`};
+ const row=i=>{const s=SM[i],r=RR(i),f=full(r),d=Object.keys(r.read).length;return `<div class="rw"><div><h3>${s.name}</h3><p class="sm mu" style="margin:0">${d} dari ${s.nm} modul dibaca (${Math.round(d/s.nm*100)}%). ${f.length?'Skor terakhir '+last(r)+'% setelah '+f.length+' percobaan.':'Kuis belum dikerjakan.'}</p><div class="pb"><i style="width:${d/s.nm*100}%"></i></div></div><div class="ac"><a class="btn g" href="${B}mapel/${i}.html">Modul</a><a class="btn g" href="${B}mapel/${i}.html#/kuis">Kuis</a></div></div>`};
  app.innerHTML=`<div class="dg"><div><p class="ey">Kelas ${P.pf.k}, ${MJ(P.pf.j).name}</p><h1>Halo, ${U}.</h1>
  <section class="na"><p class="sm">Langkah berikutnya</p><h2>${n.t}</h2><p>${n.d}</p><a class="btn" href="${n.h}">Buka sekarang</a></section>
  <h2 class="sh">Mapel wajib</h2>${CAT.wajib.map(row).join('')}<h2 class="sh">Mapel pilihan</h2>${(P.pf.p||[]).length?P.pf.p.map(row).join(''):'<p class="mu">Belum ada mapel pilihan. Atur di Pengaturan.</p>'}</div>
@@ -67,25 +71,28 @@ V.set=()=>{const sg=(k,o)=>`<div class="sg" role="group">${o.map(([v,x])=>`<butt
  $('#rx').onclick=()=>{if(!confirm('Hapus SEMUA data situs ini di perangkat ini, termasuk semua profil dan pengaturan?'))return;try{Object.keys(localStorage).filter(k=>k.startsWith('tka2')).forEach(k=>localStorage.removeItem(k))}catch(e){}U='';P=null;ST={theme:'dark',fs:1,mo:1,focus:0};ap();route()}};
 V.about=()=>{app.innerHTML=`<h1>Tentang situs ini</h1><div class="lead"><p>Platform belajar mandiri untuk persiapan TKA: modul bacaan, kuis latihan, pembahasan, dan rekam belajar.</p><p>Modul bersumber dari kisi-kisi resmi Pusmendik (bila tersedia) dan materi latihan buatan. Soal kuis adalah soal latihan buatan, bukan soal resmi TKA.</p><p>Privasi: nama, kelas, jurusan, dan progresmu hanya tersimpan di browser perangkat ini. Tidak ada yang dikirim ke server.</p></div>`};
 const gate=()=>{if(!U||!P){location.replace(B+'index.html');return 1}if(!act().includes(M.id)){app.innerHTML=`<h1>${M.name}</h1><p class="lead">Mapel ini tidak ada di pilihanmu. Kamu bisa mengubah mapel pilihan di Pengaturan.</p><a class="btn" href="${B}index.html#/setelan">Buka Pengaturan</a>`;return 1}};
-V.sub=()=>{const r=RR(M.id),f=full(r),w=wrongOf(r);
- app.innerHTML=`<p class="ey"><a href="${B}index.html#/">Dashboard</a></p><h1>${M.name}</h1><p class="lead">${M.tl}</p><div class="dg"><section><h2 class="sh">Modul bacaan</h2><ol class="ml">${M.mods.map(m=>`<li><a href="#/modul/${m.s}"><strong>${m.t}</strong><small>${r.read[m.s]?'Sudah dibaca, ':''}${m.m} menit, ${m.sr=='resmi'?'kisi-kisi resmi':'materi latihan'}</small></a></li>`).join('')}</ol></section>
+V.sub=()=>{const r=RR(M.id),f=full(r),w=wrongOf(r),dn=Object.keys(r.read).length,pc=Math.round(dn/M.mods.length*100);
+ app.innerHTML=`<p class="ey"><a href="${B}index.html#/">Dashboard</a></p><h1>${M.name}</h1><p class="lead">${M.tl}</p><div class="pst" role="group" aria-label="Progres belajar"><div class="pb"><i style="width:${pc}%"></i></div><p class="sm"><strong>${pc}%</strong> modul selesai (${dn} dari ${M.mods.length}). ${f.length?'Skor kuis terakhir '+last(r)+'%.':'Kuis belum dikerjakan.'}</p></div><div class="dg"><section><h2 class="sh">Modul bacaan</h2><ol class="ml">${M.mods.map(m=>`<li><a href="#/modul/${m.s}"><strong>${m.t}</strong><small>${r.read[m.s]?'Sudah dibaca, ':''}${m.m} menit, ${m.sr=='resmi'?'kisi-kisi resmi':'materi latihan'}</small></a></li>`).join('')}</ol></section>
  <aside class="na2"><h2>Kuis latihan</h2><p>${M.qs.length} soal, ${f.length?'skor terakhir '+last(r)+'% setelah '+f.length+' percobaan':'belum pernah dikerjakan'}.</p><div class="row"><a class="btn" href="#/kuis">${f.length?'Ulangi kuis':'Kerjakan kuis'}</a>${w.length?`<a class="btn g" href="#/salah">Latihan soal salah (${w.length})</a>`:''}${r.last?'<a class="btn g" href="#/hasil">Hasil terakhir</a>':''}</div></aside></div>`};
 V.mod=s=>{const i=M.mods.findIndex(m=>m.s==s);if(i<0){location.hash='#/';return}const m=M.mods[i],pv=M.mods[i-1],nxt=M.mods[i+1];
- app.innerHTML=`<div class="rd"><div class="rt"><a href="#/">Daftar modul</a><span id="rpos">Modul ${i+1} dari ${M.mods.length}, 0%</span><details class="toc"><summary>Daftar isi</summary><ol>${M.mods.map(x=>`<li><a href="#/modul/${x.s}">${x.t}</a></li>`).join('')}</ol></details></div><div class="rpb"><i id="rp"></i></div>
+ app.innerHTML=`<div class="rd"><div class="rt"><a href="#/">Daftar modul</a><span id="rpos">Modul ${i+1} dari ${M.mods.length}, 0%</span><details class="toc"><summary>Daftar isi</summary><ol>${M.mods.map(x=>`<li><a href="#/modul/${x.s}">${x.t}</a></li>`).join('')}</ol></details></div><div class="rpb"><i id="rp"></i></div><div class="mst"><span id="mpt"></span><div class="pb"><i id="mp"></i></div></div>
  <article><h1>${m.t}</h1><p class="meta">${M.name}, estimasi ${m.m} menit</p>${m.h}</article><nav class="rn">${pv?`<a class="btn g" href="#/modul/${pv.s}">Sebelumnya</a>`:'<span></span>'}<button class="btn" id="dn">${nxt?'Selesai, lanjut':'Selesai'}</button></nav></div>`;
- const mark=()=>{const r=RRW(M.id);if(!r.read[m.s]){r.read[m.s]=1;save()}};
+ const mps=()=>{const n=Object.keys(RR(M.id).read).length,p=Math.round(n/M.mods.length*100);$('#mp').style.width=p+'%';$('#mpt').textContent='Progres mapel '+p+'% ('+n+' dari '+M.mods.length+' modul)'};
+ const mark=()=>{const r=RRW(M.id);if(!r.read[m.s]){r.read[m.s]=1;save();mps()}};mps();
  const up=()=>{const h=document.documentElement,p=Math.min(100,Math.round(scrollY/Math.max(1,h.scrollHeight-innerHeight)*100));$('#rp').style.width=p+'%';$('#rpos').textContent=`Modul ${i+1} dari ${M.mods.length}, ${p}%`;if(p>=90)mark()};
  onscroll=up;up();$('#dn').onclick=()=>{mark();location.hash=nxt?'#/modul/'+nxt.s:'#/'}};
-function startQ(idx,sub){Q={i:0,a:[],idx,sub,t0:Date.now()};V.qz()}
+function startQ(idx,sub){Q={i:0,a:[],idx,sub,t0:Date.now(),an:true};V.qz()}
 V.qz=()=>{const q=M.qs[Q.idx[Q.i]],n=Q.idx.length,a=Q.a[Q.i]||[],dn=Q.a.filter(x=>x&&x.length).length;
  app.innerHTML=`<div style="max-width:720px"><div class="qt"><a href="#/">Keluar dari kuis</a><span>Soal ${Q.i+1} dari ${n}</span></div><div class="pb"><i style="width:${dn/n*100}%"></i></div>
  <div class="ng">${Q.idx.map((_,j)=>`<button class="${(Q.a[j]||[]).length?'d':''} ${j==Q.i?'cur':''}" data-j="${j}" aria-label="Soal ${j+1}">${j+1}</button>`).join('')}</div>
- <div class="qq">${q.q}</div><p class="sm mu">${q.t=='m'?'Pilih semua jawaban yang benar.':'Pilih satu jawaban.'}</p>
- ${q.o.map((o,k)=>`<button class="op ${a.includes(k)?'sel':''}" data-k="${k}" aria-pressed="${a.includes(k)}"><b>${L[k]}</b><span>${o}</span></button>`).join('')}
+ ${q.k?`<span class="chip">${q.k}</span>`:''}<div class="qq ${Q.an?'in':''}">${q.q}</div>${fig(q)}<p class="sm mu">${q.t=='m'?'Pilih semua jawaban yang benar (kotak centang).':'Pilih satu jawaban (A sampai E).'}</p>
+ ${q.o.map((o,k)=>q.t=='m'?`<label class="op cx ${a.includes(k)?'sel':''}"><input type="checkbox" data-k="${k}" ${a.includes(k)?'checked':''}><span>${o}</span></label>`:`<button class="op ${a.includes(k)?'sel':''}" data-k="${k}" aria-pressed="${a.includes(k)}"><b>${L[k]}</b><span>${o}</span></button>`).join('')}
  <div class="row sp"><button class="btn g" id="pv" ${Q.i?'':'disabled'}>Sebelumnya</button>${Q.i<n-1?'<button class="btn" id="nx">Berikutnya</button>':'<button class="btn" id="fn">Selesai dan lihat hasil</button>'}</div></div>`;
- $$('.op').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;Q.a[Q.i]=q.t=='m'?(a.includes(k)?a.filter(x=>x!=k):[...a,k]):[k];V.qz()});
- $$('.ng button').forEach(b=>b.onclick=()=>{Q.i=+b.dataset.j;V.qz()});
- $('#pv').onclick=()=>{Q.i--;V.qz()};if($('#nx'))$('#nx').onclick=()=>{Q.i++;V.qz()};
+ $$('button.op').forEach(b=>b.onclick=()=>{Q.f=+b.dataset.k;Q.a[Q.i]=[Q.f];V.qz()});
+ $$('.cx input').forEach(x=>x.onchange=()=>{const k=+x.dataset.k;Q.f=k;Q.a[Q.i]=x.checked?[...a,k]:a.filter(y=>y!=k);V.qz()});
+ Q.an=false;if(Q.f!=null){const e=$('[data-k="'+Q.f+'"]');if(e)e.focus();Q.f=null}
+ $$('.ng button').forEach(b=>b.onclick=()=>{Q.i=+b.dataset.j;Q.an=true;V.qz()});
+ $('#pv').onclick=()=>{Q.i--;Q.an=true;V.qz()};if($('#nx'))$('#nx').onclick=()=>{Q.i++;Q.an=true;V.qz()};
  if($('#fn'))$('#fn').onclick=()=>{const un=Q.idx.filter((_,j)=>!(Q.a[j]||[]).length).length;if(un&&!confirm(un+' soal belum dijawab. Tetap selesai?'))return;
   const as=Q.idx.map((_,j)=>Q.a[j]||[]),c=Q.idx.filter((qi,j)=>ok(M.qs[qi],as[j])).length,r=RRW(M.id);
   r.h.push({t:Date.now(),s:Math.round(c/n*100),c,n,d:Math.round((Date.now()-Q.t0)/1000),sub:Q.sub});r.last={idx:Q.idx,a:as,sub:Q.sub};save();Q=null;location.hash='#/hasil'}};
@@ -94,12 +101,18 @@ V.res=()=>{const r=RR(M.id),l=r.last;if(!l){location.hash='#/';return}
  const h=r.h[r.h.length-1],pv=r.h.slice(0,-1).filter(x=>x.sub==h.sub).pop(),w=wrongOf(r),dl=pv?h.s-pv.s:null;
  app.innerHTML=`<p class="ey"><a href="#/">${M.name}</a></p><div class="dg"><div><p class="sm mu">${l.sub?'Latihan soal salah':'Hasil kuis'}</p><div class="big">${h.s}%</div><p class="lead">${h.c} dari ${h.n} soal benar, waktu ${Math.floor(h.d/60)} menit ${h.d%60} detik.${dl==null?'':' '+(dl>=0?'Naik ':'Turun ')+Math.abs(dl)+' poin dari percobaan sebelumnya.'}</p></div>
  <aside class="na2"><h2>Langkah berikutnya</h2><div class="row"><button class="btn" id="gp">Lihat pembahasan</button><a class="btn g" href="#/kuis">Coba lagi</a>${w.length?`<a class="btn g" href="#/salah">Latihan soal salah (${w.length})</a>`:''}<a class="btn g" href="#/">Kembali ke modul</a></div></aside></div>
- <h2 class="sh" id="pbh">Pembahasan</h2>${l.idx.map((qi,j)=>{const q=M.qs[qi],u=l.a[j],g=ok(q,u);return `<article class="rv"><p class="stt ${!u.length?'na':g?'ok':'no'}">${!u.length?'Tidak dijawab':g?'Benar':'Salah'}</p><div class="qq">${q.q}</div>${q.o.map((o,k)=>`<div class="op ${q.a.includes(k)?'ok':u.includes(k)?'no':''}"><b>${L[k]}</b><span>${o}${q.a.includes(k)?' (jawaban benar)':u.includes(k)?' (jawabanmu)':''}</span></div>`).join('')}<div class="ex"><b>Pembahasan</b><p>${g?'Jawabanmu tepat. ':'Jawaban yang tepat: '+q.a.map(k=>L[k]).join(', ')+'. '}${q.e}</p></div></article>`}).join('')}`;
+ <h2 class="sh" id="pbh">Pembahasan</h2>${l.idx.map((qi,j)=>{const q=M.qs[qi],u=l.a[j],g=ok(q,u);return `<article class="rv"><p class="stt ${!u.length?'na':g?'ok':'no'}">${!u.length?'Tidak dijawab':g?'Benar':'Salah'}</p>${q.k?`<span class="chip">${q.k}</span>`:''}<div class="qq">${q.q}</div>${fig(q)}${rvo(q,u)}<div class="ex"><b>Pembahasan</b><p>${g?'Jawabanmu tepat. ':'Jawaban yang tepat: '+q.a.map(k=>L[k]).join(', ')+'. '}${q.e}</p></div></article>`}).join('')}`;
  $('#gp').onclick=()=>$('#pbh').scrollIntoView({behavior:ST.mo?'smooth':'auto'})};
 function route(){onscroll=null;const [r,a]=location.hash.slice(2).split('/');document.body.dataset.mode=M&&r=='modul'?'read':'act';hdr();
  if(!M){if(r=='tentang')V.about();else if(!P)V.land();else V[{rekam:'rekam',setelan:'set'}[r]||'dash']()}
  else{if(gate())return;({modul:()=>V.mod(a),kuis:()=>startQ(M.qs.map((_,i)=>i),false),salah:V.salah,hasil:V.res}[r]||V.sub)()}
  scrollTo(0,0)}
-ap();load();addEventListener('hashchange',route);route();
+const ld=document.createElement('div');ld.id='ld';ld.className='ld';ld.setAttribute('aria-live','polite');ld.innerHTML='<div class="spn"></div><p id="ldt">Memuat…</p>';document.body.appendChild(ld);
+const LM={modul:'Membuka modul…',kuis:'Menyiapkan soal…',salah:'Menyiapkan soal…',hasil:'Menghitung hasil…',rekam:'Menyusun rekam belajar…',setelan:'Membuka pengaturan…'};let nt;
+const goLoad=(t,fn)=>{if(!ST.mo){fn();return}$('#ldt').textContent=t;ld.classList.add('on');clearTimeout(nt);nt=setTimeout(fn,420)};
+addEventListener('pageshow',()=>ld.classList.remove('on'));
+addEventListener('hashchange',()=>goLoad(LM[location.hash.slice(2).split('/')[0]]||'Memuat…',()=>{route();ld.classList.remove('on')}));
+document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a||!ST.mo||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||a.target=='_blank')return;const u=new URL(a.href,location.href);if(u.origin!=location.origin||u.pathname==location.pathname)return;e.preventDefault();goLoad('Memuat halaman…',()=>{location.href=a.href})});
+ap();load();route();
 setInterval(()=>{if(P&&!document.hidden){P.ds=P.ds||{};P.ds[day()]=(P.ds[day()]||0)+15;save()}},15000);
 })();
