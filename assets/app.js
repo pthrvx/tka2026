@@ -42,10 +42,10 @@ let showRev=false;
 const countUp=(el,to)=>{if(!ST.mo||!to){el.textContent=to+'%';return}const t0=performance.now(),f=t=>{const p=Math.min(1,(t-t0)/900),e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e)+'%';if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
 function modDone(m,nxt){const r=RR(M.id),n=Object.keys(r.read).length,pc=Math.round(n/M.mods.length*100),C=2*Math.PI*44,o=document.createElement('div');
  o.className='md2';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-labelledby','mdt');
- o.innerHTML=`<div class="box"><div class="rw2"><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="rbg" cx="50" cy="50" r="44"/><circle class="rfg" id="rf" cx="50" cy="50" r="44" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg><div class="rn2"><div><span id="rv">0</span>%</div></div></div><h2 id="mdt">Modul selesai</h2><p class="mu sm">${m.t}. Progres ${M.name}: ${pc}% (${n} dari ${M.mods.length} modul).</p>
- <div class="acts" id="acts"><a class="btn" href="#/kuis" id="a1">Lanjut latihan soal</a><button class="btn g" id="a2">Pelajari lagi</button>${nxt?`<a class="lk" href="#/modul/${nxt.s}">Modul berikutnya: ${nxt.t}</a>`:''}</div></div>`;
+ o.innerHTML=`<div class="box"><div class="rw2"><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="rbg" cx="50" cy="50" r="44"/><circle class="rfg" id="rf" cx="50" cy="50" r="44" stroke-dasharray="${C}" stroke-dashoffset="${C}"/></svg><div class="rn2"><div><span id="rv">0</span>%</div></div></div><h2 id="mdt">Semua modul ${M.name} selesai</h2><p class="mu sm">Kamu sudah menyelesaikan ${n} dari ${M.mods.length} modul (${pc}%). Saatnya menguji pemahamanmu, atau ulangi bagian yang masih ragu.</p>
+ <div class="acts" id="acts"><a class="btn" href="#/kuis" id="a1">Lanjut latihan soal</a><button class="btn g" id="a2">Pelajari lagi</button></div></div>`;
  document.body.appendChild(o);const cl=()=>{o.remove();document.removeEventListener('keydown',kd)},kd=e=>{if(e.key=='Escape'&&$('#acts').classList.contains('on'))cl()};document.addEventListener('keydown',kd);
- $$('.md2 a').forEach(a=>a.addEventListener('click',cl));$('#a2').onclick=()=>{cl();scrollTo({top:0,behavior:ST.mo?'smooth':'auto'})};
+ $$('.md2 a').forEach(a=>a.addEventListener('click',cl));$('#a2').onclick=()=>{cl();location.hash='#/'};
  const show=()=>{$('#rf').style.strokeDashoffset=0;$('#rv').textContent='100';$('#acts').classList.add('on');$('#a1').focus()};
  if(!ST.mo){show();return}const t0=performance.now(),st=t=>{const p=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-p,3);$('#rf').style.strokeDashoffset=C*(1-e);$('#rv').textContent=Math.round(e*100);if(p<1)requestAnimationFrame(st);else show()};requestAnimationFrame(st)}
 const V={};
@@ -100,7 +100,7 @@ V.mod=s=>{const i=M.mods.findIndex(m=>m.s==s);if(i<0){location.hash='#/';return}
  onscroll=up;up();
  const tb=$('#tb'),tp=$('#tocp'),tt=o=>{tp.classList.toggle('on',o);tb.setAttribute('aria-expanded',o)};
  tb.onclick=e=>{e.stopPropagation();tt(!tp.classList.contains('on'))};document.onclick=e=>{if(!e.target.closest('#tocp'))tt(false)};document.onkeydown=e=>{if(e.key=='Escape')tt(false)};
- $('#dn').onclick=()=>{mark();modDone(m,nxt)}};
+ $('#dn').onclick=()=>{mark();const r=RRW(M.id);if(Object.keys(r.read).length>=M.mods.length&&!r.done){r.done=1;save();modDone(m,nxt)}else location.hash=nxt?'#/modul/'+nxt.s:'#/'}};
 function startQ(idx,sub){Q={i:0,a:[],idx,sub,t0:Date.now(),an:true};V.qz()}
 V.qz=()=>{const q=M.qs[Q.idx[Q.i]],n=Q.idx.length,a=Q.a[Q.i]||[],dn=Q.a.filter(x=>x&&x.length).length;
  app.innerHTML=`<div style="max-width:720px"><div class="qt"><a href="#/">Keluar dari kuis</a><span>Soal ${Q.i+1} dari ${n}</span></div><div class="pb"><i style="width:${dn/n*100}%"></i></div>
