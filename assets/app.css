@@ -47,7 +47,7 @@ button.op{cursor:pointer}.op b{flex:none;width:26px;height:26px;border-radius:50
 .ex{margin-top:10px;padding:12px 14px;border-left:3px solid var(--ac);background:var(--sf)}.ex p{margin:4px 0 0}
 @keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 body[data-mode=read]{background:var(--rb)}body[data-mode=read] .hd,body[data-mode=read] .ft{display:none}
-.rd *{animation:none!important;transition:none!important}
+.rd article *{animation:none!important;transition:none!important}
 .rt{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:14px;color:var(--mu);max-width:68ch;margin:0 auto;padding:14px 0}.rt a{text-decoration:none}
 .rpb{position:fixed;top:0;left:0;right:0;height:3px;background:transparent}.rpb i{display:block;height:100%;width:0;background:var(--mu)}
 .toc summary{cursor:pointer}.toc ol{position:absolute;right:20px;background:var(--sf);border:1px solid var(--ln);border-radius:var(--r);padding:10px 12px 10px 30px;max-width:340px;margin:6px 0}
@@ -84,3 +84,38 @@ body[data-mode=act] .dg>*,body[data-mode=act] .lg>*{animation:fi .5s var(--e) bo
 .ld.on{opacity:1;visibility:visible;transition-delay:0s}.spn{width:36px;height:36px;border:3px solid var(--ln);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 
 .kn{border:1px solid var(--ln);border-left:3px solid var(--ac);background:var(--sf);padding:12px 14px;border-radius:var(--r);margin:0 0 12px}.kn p{margin:6px 0 0;font-size:14px;color:var(--mu)}
+
+/* menu burger animasi */
+.hd{position:relative}.bgr{width:46px;height:46px;border:1px solid var(--ln);border-radius:var(--r);background:var(--sf);display:none;place-content:center;gap:5px;cursor:pointer}
+.bgr i{display:block;width:20px;height:2px;background:var(--ink);border-radius:2px;transition:transform .3s var(--e),opacity .2s}
+.hd.mo .bgr i:nth-child(1){transform:translateY(7px) rotate(45deg)}.hd.mo .bgr i:nth-child(2){opacity:0}.hd.mo .bgr i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mnp{position:absolute;right:20px;top:calc(100% + 8px);min-width:230px;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:8px;z-index:30;opacity:0;visibility:hidden;transform:translateY(-8px) scale(.98);transform-origin:top right;transition:opacity .25s var(--e),transform .25s var(--e),visibility 0s linear .25s}
+.hd.mo .mnp{opacity:1;visibility:visible;transform:none;transition-delay:0s}.mnp a{display:block;padding:14px 16px;border-radius:8px;text-decoration:none;transition:background .2s}.mnp a:hover{background:var(--bg)}
+@media(max-width:759px){.bgr{display:grid}}@media(min-width:760px){.mnp{display:none}}
+/* daftar isi modul */
+.rt{position:relative;flex-wrap:nowrap;padding:18px 0 10px}.rt .btn{padding:10px 16px;font-size:14px;min-height:44px}
+.tocp{position:absolute;top:calc(100% + 6px);left:0;right:0;max-height:min(70vh,520px);overflow:auto;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:8px;z-index:20;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s var(--e),transform .25s var(--e),visibility 0s linear .25s}
+.tocp.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}.tocp ol{list-style:none;margin:0;padding:0}
+.tocp a{display:flex;align-items:center;gap:14px;padding:14px 16px;min-height:52px;border-radius:8px;text-decoration:none;color:var(--ink);font:15px/1.35 'Plus Jakarta Sans',system-ui,sans-serif;transition:background .2s}
+.tocp a:hover,.tocp a[aria-current]{background:var(--bg)}.tocp a[aria-current]{font-weight:700}.tocp .tn{flex:none;width:28px;height:28px;border:1px solid var(--ln);border-radius:50%;display:grid;place-items:center;font-size:12px}.tocp small{margin-left:auto;color:var(--mu);font-size:12px}
+.rpos{max-width:68ch;margin:0 auto 10px;font:14px 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--mu)}.rd article{animation:fi .45s var(--e)}
+.rn{gap:12px;padding:24px 0 64px}.rn .btn{min-height:48px}
+/* jarak dan area sentuh */
+.ng{gap:8px}.ng button{width:42px;height:42px}.op{margin:10px 0;padding:14px 16px}.ck{margin:10px 0}fieldset{padding:14px 16px;margin-bottom:16px}label{margin-bottom:16px}
+.sg button{padding:11px 18px;min-height:44px}.set{padding:14px 0}.row{gap:12px}.rw{padding:20px 0}.ac{gap:10px}.ml a{padding:18px 0}
+.so a{display:inline-block;padding:8px 0;margin-right:18px}.na{padding:28px}.na2{padding:24px}.sh{margin:36px 0 8px}.qt{margin:20px 0 6px}.qq{margin:10px 0 14px}.fg{margin:12px 0 18px}
+.ch{display:grid;gap:12px;margin-top:16px}.ch .btn{text-align:center}.pb.an i{animation:gw .9s var(--e) both}@keyframes gw{from{width:0}}
+/* popup modul selesai */
+.md2{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.62);display:grid;place-items:center;padding:20px;animation:pg .25s var(--e)}
+.md2 .box{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:32px 24px 26px;max-width:420px;width:100%;text-align:center;animation:fi .4s var(--e)}
+.rw2{position:relative;width:168px;height:168px;margin:0 auto 18px}.ring{width:100%;height:100%;transform:rotate(-90deg)}
+.rbg{fill:none;stroke:var(--ln);stroke-width:8}.rfg{fill:none;stroke:var(--ac);stroke-width:8;stroke-linecap:round}
+.rn2{position:absolute;inset:0;display:grid;place-content:center;font-size:40px;font-weight:800;letter-spacing:-.02em}
+.acts{display:grid;gap:12px;margin-top:22px;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .35s var(--e),transform .35s var(--e),visibility 0s linear .35s}.acts.on{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.acts .lk{padding:8px 0}
+/* loading scene */
+.loader{width:50px;aspect-ratio:1;display:grid;border:4px solid #0000;border-radius:50%;border-color:#ccc #0000;animation:l16 1s infinite linear}
+.loader::before,.loader::after{content:"";grid-area:1/1;margin:2px;border:inherit;border-radius:50%}
+.loader::before{border-color:#f03355 #0000;animation:inherit;animation-duration:.5s;animation-direction:reverse}
+.loader::after{margin:8px}
+@keyframes l16{100%{transform:rotate(1turn)}}
