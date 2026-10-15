@@ -82,3 +82,5 @@ body[data-mode=act] .dg>*,body[data-mode=act] .lg>*{animation:fi .5s var(--e) bo
 .pst{margin:14px 0 4px;max-width:560px}.mst{max-width:68ch;margin:0 auto 6px;font:14px 'Plus Jakarta Sans',system-ui,sans-serif;color:var(--mu)}.mst .pb{margin:4px 0 10px}
 .ld{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--mu);opacity:0;visibility:hidden;transition:opacity .25s var(--e),visibility 0s linear .25s}
 .ld.on{opacity:1;visibility:visible;transition-delay:0s}.spn{width:36px;height:36px;border:3px solid var(--ln);border-top-color:var(--ac);border-radius:50%;animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+
+.kn{border:1px solid var(--ln);border-left:3px solid var(--ac);background:var(--sf);padding:12px 14px;border-radius:var(--r);margin:0 0 12px}.kn p{margin:6px 0 0;font-size:14px;color:var(--mu)}
