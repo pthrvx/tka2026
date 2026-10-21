@@ -1,1 +1,109 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Persiapan TKA 2026</title><link rel="stylesheet" href="assets/app.css?v=1792139313"><link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,700&display=swap" rel="stylesheet"><script>try{document.documentElement.dataset.theme=JSON.parse(localStorage.getItem("tka2_set")).theme||"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script></head><body><header class="hd w" id="hd"></header><main class="w" id="app"></main><footer class="ft"><div class="w"><p>Website ini dibuat dan dikelola oleh <b>Putra</b>.</p><p class="so"><a href="https://instagram.com/pthrvx" target="_blank" rel="noopener">Instagram</a><a href="https://github.com/pthrvx" target="_blank" rel="noopener">GitHub</a><a href="https://www.tiktok.com/@pthrvx" target="_blank" rel="noopener">TikTok</a></p><p>© 2026 Putra. Soal dan materi untuk latihan mandiri, bukan soal resmi TKA.</p></div></footer><script src="assets/catalog.js?v=1792139313"></script><script src="assets/app.js?v=1792139313"></script></body></html>
+<!doctype html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#14130F">
+  <meta name="description" content="Website latihan TKA 2026 sedang dalam tahap pengembangan.">
+  <title>Segera Hadir — Persiapan TKA 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#14130F; --sf:#1C1B16; --ink:#F1EEE6; --mu:#A39F93;
+      --ln:#2F2D26; --ac:#F7D117; --oa:#16140B; --ok:#7CD99A;
+      --ui:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+      --se:'Newsreader',Georgia,'Times New Roman',serif;
+      color-scheme:dark;
+    }
+    :root[data-theme="light"] {
+      --bg:#F3EFE6; --sf:#FBF9F4; --ink:#1B1A16; --mu:#625E52;
+      --ln:#D9D3C4; --ac:#F2C300; --oa:#1B1A16; --ok:#1E6B3A;
+      color-scheme:light;
+    }
+    *{box-sizing:border-box}
+    html{min-height:100%;background:var(--bg)}
+    body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--ui);display:flex;flex-direction:column}
+    a{color:inherit}
+    .wrap{width:min(1120px,100%);margin-inline:auto;padding-inline:clamp(20px,4vw,36px)}
+    header{height:78px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ln)}
+    .brand{font:700 23px/1 var(--se);letter-spacing:-.04em;text-decoration:none}
+    .brand small{font:600 11px var(--ui);letter-spacing:.12em;text-decoration:none;color:var(--mu);margin-left:9px;vertical-align:middle}
+    .theme{display:flex;align-items:center;gap:9px;border:1px solid var(--ln);background:transparent;color:var(--ink);font:600 13px var(--ui);padding:9px 12px;cursor:pointer}
+    .theme span{font-size:16px}
+    main{flex:1;display:grid;place-items:center;padding-block:64px 72px}
+    .hero{width:min(760px,100%);text-align:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--ln);padding:7px 12px;font-size:11px;font-weight:700;letter-spacing:.11em;color:var(--mu);text-transform:uppercase}
+    .dot{height:7px;width:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 13%,transparent);animation:pulse 2s infinite}
+    h1{font:700 clamp(42px,8vw,78px)/.99 var(--se);letter-spacing:-.055em;margin:28px 0 22px}
+    h1 em{font-weight:400;color:var(--ac);font-style:italic}
+    .lead{font-size:clamp(16px,2vw,18px);line-height:1.75;color:var(--mu);max-width:570px;margin:0 auto}
+    .rule{height:1px;background:var(--ln);width:72px;margin:32px auto}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--ln);margin:0 auto;text-align:left}
+    .feature{padding:20px 18px;min-width:0}
+    .feature+.feature{border-left:1px solid var(--ln)}
+    .num{font:500 13px var(--se);color:var(--ac);margin-bottom:14px}
+    .feature h2{font:700 15px/1.35 var(--ui);margin:0 0 5px}
+    .feature p{font-size:12px;line-height:1.55;color:var(--mu);margin:0}
+    .note{margin:28px 0 0;font-size:13px;color:var(--mu)}
+    .note strong{color:var(--ink);font-weight:600}
+    footer{border-top:1px solid var(--ln);padding-block:20px}
+    .foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--mu)}
+    .foot p{margin:0}
+    .links{display:flex;gap:18px}.links a{text-decoration:none;border-bottom:1px solid transparent}.links a:hover{color:var(--ink);border-color:var(--ac)}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+    @media(max-width:560px){header{height:68px}.brand{font-size:21px}.brand small{display:none}main{padding-block:54px 58px}h1{margin-top:24px}.features{grid-template-columns:1fr}.feature{display:grid;grid-template-columns:28px 1fr;column-gap:10px;padding:15px 16px}.feature+.feature{border-left:0;border-top:1px solid var(--ln)}.num{grid-row:span 2;margin:1px 0 0}.feature h2{margin-bottom:3px}.foot{justify-content:center;text-align:center}.links{width:100%;justify-content:center}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <a class="brand" href="#" aria-label="Persiapan TKA 2026">RUANG TKA <small>2026</small></a>
+    <button class="theme" id="themeToggle" type="button" aria-label="Ganti tema"><span id="themeIcon">☼</span><span id="themeLabel">Mode terang</span></button>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" aria-labelledby="title">
+      <div class="eyebrow"><span class="dot" aria-hidden="true"></span> Sedang dalam pengembangan</div>
+      <h1 id="title">Kami sedang menyiapkan sesuatu <em>untukmu.</em></h1>
+      <p class="lead">Website latihan TKA ini masih dalam tahap pengembangan. Kami sedang merapikan materi, latihan soal, dan pengalaman belajar supaya kamu bisa mempersiapkan diri dengan lebih nyaman.</p>
+      <div class="rule" aria-hidden="true"></div>
+      <div class="features" aria-label="Yang sedang dipersiapkan">
+        <article class="feature"><div class="num">01 /</div><h2>Materi terstruktur</h2><p>Referensi belajar yang lebih mudah diikuti.</p></article>
+        <article class="feature"><div class="num">02 /</div><h2>Latihan soal</h2><p>Ruang untuk berlatih dan menguji pemahaman.</p></article>
+        <article class="feature"><div class="num">03 /</div><h2>Pengalaman belajar</h2><p>Tampilan yang nyaman di HP maupun desktop.</p></article>
+      </div>
+      <p class="note"><strong>Terima kasih sudah mampir.</strong> Sampai bertemu saat website siap!</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <p>© 2026 Putra · Website latihan mandiri TKA</p>
+      <nav class="links" aria-label="Tautan sosial">
+        <a href="https://github.com/pthrvx" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://instagram.com/pthrvx" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.tiktok.com/@pthrvx" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </nav>
+    </div>
+  </footer>
+  <script>
+    const root = document.documentElement;
+    const toggle = document.getElementById('themeToggle');
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+    function setTheme(theme) {
+      root.dataset.theme = theme;
+      icon.textContent = theme === 'dark' ? '☼' : '☾';
+      label.textContent = theme === 'dark' ? 'Mode terang' : 'Mode gelap';
+      try { localStorage.setItem('tka2_set', JSON.stringify({theme})); } catch(e) {}
+    }
+    try {
+      const saved = JSON.parse(localStorage.getItem('tka2_set') || '{}');
+      setTheme(saved.theme === 'light' ? 'light' : 'dark');
+    } catch(e) { setTheme('dark'); }
+    toggle.addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+  </script>
+</body>
+</html>
